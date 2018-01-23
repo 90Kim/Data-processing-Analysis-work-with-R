@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls())\ngc()\n\n##### 01. 난수 생성 및 분포 함수\n\nrnorm(100, 0, 1)\nplot(density(rnorm(10000,0,1)))\n\n##### 02. 기초 통계량\nsummary(1:11)\n\nx <- factor(c(\"a\",\"b\",\"c\",\"c\",\"c\",\"d\",\"d\"))\ntable(x)\nwhich.max(table(x))\n\n##### 03. 표본 추출\n\nsample(1:10, 5)\nsample(1:10, 5, replace = TRUE)\n\n# 가중치 고려 표본 추출 : prob\nsample(1:10, 5, replace = TRUE, prob = 1:10)\n\n# 층화 임의 추출\ninstall.packages(\"sampling\")\nlibrary(sampling)\nx <- strata(c(\"Species\"), size=c(3,1,1), method = \"srswor\", data = iris)\nx\ngetdata(iris, x)\n\n# 계통 추출\ninstall.packages(\"doBy\")\nlibrary(doBy)\n(x <- data.frame(x=1:10))\nsampleBy(~1, frac = 0.4, data = x, systematic = TRUE)\n\n##### 04. 분할표\n\ntable(c(\"a\",\"b\",\"b\",\"c\",\"c\",\"c\",\"d\"))\n\nd <- data.frame(x = c(\"1\",\"2\",\"2\",\"1\"),\n                y = c(\"A\",\"B\",\"A\",\"B\"),\n                num = c(3,5,8,7))\nd\n(xt <- xtabs(num ~ x+y, data = d))\n\nd2 <- data.frame(x=c(\"a\",\"a\",\"a\",\"b\",\"b\"))\n(xtabs(~x, data = d2))\n\nmargin.table(xt, 1)\nmargin.table(xt, 2)\nmargin.table(xt)\nprop.table(xt, 1)\nprop.table(xt, 2)\nprop.table(xt)\n\nx <- seq(1,10,0.1)\nplot(x, dchisq(x, 6), type = \"l\")\n\nlibrary(MASS)\ndata(\"survey\")\nstr(survey)\nhead(survey)\nxtabs(~ Sex + Exer, data = survey)\nchisq.test(xtabs(~ Sex + Exer, data = survey))\nxtabs(~ W.Hnd + Clap, data = survey)\nchisq.test(xtabs(~ W.Hnd + Clap, data = survey))\nfisher.test(xtabs(~ W.Hnd + Clap, data = survey))\nPerformance <- matrix(c(794, 86, 150, 570), nrow = 2,\n                      dimnames = list(\"1st Survey\" = c(\"Approve\", \"Disapprove\"),\n                                       \"2nd Survey\" = c(\"Approve\", \"Disapprove\")))\nPerformance\nmcnemar.test(Performance)\n\n##### 05. 적합도 검정\n\ntable(survey$W.Hnd)\nchisq.test(table(survey$W.Hnd), p = c(0.3, 0.7))\nshapiro.test(rnorm(1000))\n\nx <- rnorm(1000, mean = 10, sd = 1)\nqqnorm(x)\nqqline(x)\n\nx <- runif(1000)\nqqnorm(x)\nqqline(x)\n\nqqplot(runif(1000, min = 1, max = 10), 1:10)\n\n##### 06. 상관분석\n\ncor(iris$Sepal.Length, iris$Sepal.Width)\ncor(iris[,1:4])\nsymnum(cor(iris[,1:4]))\n\ninstall.packages(\"corrgram\")\nlibrary(corrgram)\ncorrgram(iris, upper.panel = panel.conf)\n\nx <- c(3,4,5,3,2,1,7,5)\nrank(sort(x))\n(m <- matrix(c(1:10, (1:10)^2), ncol = 2))\ncor(m, method = \"spearman\")\ncor(m, method = \"pearson\")\n\ncor(c(1,2,3,4,5),c(1,0,3,4,5), method = \"kendall\")\n\ncor.test(c(1,2,3,4,5), c(1,0,3,4,5), method = \"pearson\")\ncor.test(c(1,2,3,4,5), c(1,0,3,4,5), method = \"spearman\")\ncor.test(c(1,2,3,4,5), c(1,0,3,4,5), method = \"kendall\")\n\n##### 07. 추정 및 검정\n\nx <- rnorm(30)\nt.test(x)\nx <- rnorm(30, mean = 10)\nt.test(x, mu = 10)\n\nsleep\nsleep2 <- sleep[,-3]\ntapply(sleep2$extra, sleep2$group, mean)\nlibrary(doBy)\nsummaryBy(extra ~ group, sleep2)\nvar.test(extra ~ group, sleep2)\nt.test(extra ~ group, data = sleep2, paired = FALSE, var.equal = TRUE)\nwith(sleep, t.test(extra[group==1], extra[group==2], paired = TRUE))\nwith(iris, var.test(Sepal.Width, Sepal.Length))\nprop.test(42, 100)\nprop.test(c(45,55), c(100,90))\n",
+    "created" : 1512529542290.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4065070012",
+    "id" : "DA88EFE4",
+    "lastKnownWriteTime" : 1512560561,
+    "last_content_update" : 1512560561381,
+    "path" : "~/R/Data processing & Analysis work with R/code/ch07.R",
+    "project_path" : "code/ch07.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
