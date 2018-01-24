@@ -1,5 +1,5 @@
 getwd()
-setwd("c:/Users/GooYoung/Documents/R/Data processing & Analysis work with R/")
+setwd("c:/Users/GooYoung/Documents/R/Data_processing_Analysis_work_withR/")
 data("iris")
 head(iris)
 str(iris)
