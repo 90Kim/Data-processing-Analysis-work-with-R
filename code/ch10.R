@@ -114,3 +114,29 @@ grid <- expand.grid(ntree = c(10,100,200), mtry = c(3,4))
 library(nnet)
 m6 <- nnet(Species ~ ., data = iris, size = 3)
 predict(m6, newdata = iris)
+predict(m6, newdata = iris, type = "class")
+
+class.ind(iris$Species)
+m7 <- nnet(iris[,1:4], class.ind(iris$Species), size = 3, softmax = TRUE)
+
+summary(m6)
+summary(m7)
+
+##### 05. Support Vector Machine - kernlab, el071
+
+# install.packages("kernlab")
+library(kernlab)
+m8 <- ksvm(Species ~ ., data = iris)
+m8
+m9 <- ksvm(Species ~ ., data = iris, kernel = "vanilladot")
+m9
+m10 <- ksvm(Species ~., data = iris, kernel = "polydot", kpar = list(degree = 3))
+m10
+
+predict(m8, newdata = iris)
+predict(m9, newdata = iris)
+predict(m10, newdata = iris)
+
+# install.packages("e1071")
+library(e1071)
+tune(svm, Species ~ ., data = iris, gamma = 2^(-1:1), cost = 2^(2:4))
