@@ -140,3 +140,48 @@ predict(m10, newdata = iris)
 # install.packages("e1071")
 library(e1071)
 tune(svm, Species ~ ., data = iris, gamma = 2^(-1:1), cost = 2^(2:4))
+
+
+# 
+# 
+# 
+# 
+# 
+# 
+#     Study more about SVM       
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+
+
+##### 06. Class Imbalance
+
+library(caret)
+library(mlbench)
+data("BreastCancer")
+table(BreastCancer$Class)
+
+x <- upSample(subset(BreastCancer, select = -Class), BreastCancer$Class)
+x2 <- downSample(subset(BreastCancer, select = -Class), BreastCancer$Class)
+table(BreastCancer$Class)
+table(x$Class)
+table(x2$Class)
+
+# # compare decision tree model of (upSample data & just data)
+# library(party)
+# str(BreastCancer)
+# data <- subset(BreastCancer, select = -Id)
+# parts <- createDataPartition(data$Class, p=0.8)
+# # just
+# data_train <- data[parts$Resample1,]
+# data_test <- data[-parts$Resample1,]
+# m11 <- rpart(Class ~ ., data = data_train)
+# confusionMatrix(data_test$Class, predict(m11, newdata = data_test, type = "class"))
+# # upSample
+# data_up_train <- upSample(subset(data_train, select = -Class), data_train$Class)
+# m12 <- rpart(Class ~ ., data = data_up_train)
+# confusionMatrix(data_test$Class, predict(m12, newdata = data_test, type = "class"))
