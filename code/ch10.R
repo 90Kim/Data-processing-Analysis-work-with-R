@@ -185,3 +185,20 @@ table(x2$Class)
 # data_up_train <- upSample(subset(data_train, select = -Class), data_train$Class)
 # m12 <- rpart(Class ~ ., data = data_up_train)
 # confusionMatrix(data_test$Class, predict(m12, newdata = data_test, type = "class"))
+
+
+##### 07. Document Classification
+
+install.packages("tm")
+library(tm)
+data(crude)
+summary(crude)
+
+inspect(crude)
+inspect(crude[1])
+inspect(crude[[1]])
+
+crude[[1]]$content
+crude[[1]]$meta
+
+c
