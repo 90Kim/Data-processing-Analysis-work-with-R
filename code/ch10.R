@@ -201,4 +201,18 @@ inspect(crude[[1]])
 crude[[1]]$content
 crude[[1]]$meta
 
-c
+inspect(tm_map(tm_map(crude, tolower), removePunctuation)[1])
+inspect(tm_map(tm_map(crude, tolower)[1], removePunctuation))
+
+x <- TermDocumentMatrix(crude)
+x
+inspect(x[1:10, 1:10])
+
+x <- TermDocumentMatrix(crude, control = list(weighting = weightTfIdf))
+inspect(x[1:10, 1:5])
+
+findFreqTerms(TermDocumentMatrix(crude), lowfreq = 10)
+head(rownames(x))
+head(colnames(x))
+
+findAssocs(TermDocumentMatrix(crude), "oil", 0.7)
