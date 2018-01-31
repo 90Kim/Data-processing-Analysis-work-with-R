@@ -189,7 +189,7 @@ table(x2$Class)
 
 ##### 07. Document Classification
 
-install.packages("tm")
+# install.packages("tm")
 library(tm)
 data(crude)
 summary(crude)
@@ -203,16 +203,60 @@ crude[[1]]$meta
 
 inspect(tm_map(tm_map(crude, tolower), removePunctuation)[1])
 inspect(tm_map(tm_map(crude, tolower)[1], removePunctuation))
+inspect(tm_map(tm_map(crude, tolower), removePunctuation)[2])
 
 x <- TermDocumentMatrix(crude)
 x
 inspect(x[1:10, 1:10])
 
 x <- TermDocumentMatrix(crude, control = list(weighting = weightTfIdf))
-inspect(x[1:10, 1:5])
+inspect(x[1:10, 1:10])
 
 findFreqTerms(TermDocumentMatrix(crude), lowfreq = 10)
 head(rownames(x))
 head(colnames(x))
 
 findAssocs(TermDocumentMatrix(crude), "oil", 0.7)
+
+data(crude)
+data(acq)
+
+to_dtm <- function(corpus, label){
+  x <- tm_map(corpus, tolower)
+  x <- tm_map(corpus, removePunctuation)
+  return (DocumentTermMatrix(x))
+}
+
+crude_acq <- c(to_dtm(crude), to_dtm(acq))
+crude_acq_df <- cbind(as.data.frame(as.matrix(crude_acq)),
+                      LABEL=c(rep('crude', 20), rep('acq',50)))
+View(crude_acq_df)
+
+library(caret)
+library(rpart)
+
+train_idx <- createDataPartition(crude_acq_df$LABEL, 0.8)$Resample1
+crude_acq_train <- crude_acq_df[train_idx,]
+crude_acq_test <- crude_acq_df[-train_idx,]
+
+m <- rpart(LABEL ~ ., data = crude_acq_train)
+confusionMatrix(predict(m, newdata = crude_acq_test, type = "class"),
+                crude_acq_test$LABEL)
+
+getSources()
+
+docs <- read.csv("data/docs.csv", stringsAsFactors = FALSE, encoding = 'UTF-8')
+str(docs)
+
+corpus <- Corpus(DataframeSource(docs[,1:2]))
+str(corpus)
+inspect(corpus)
+corpus[[4]]$content
+corpus[[4]]$meta
+
+meta(crude[1], type="corpus")
+meta(crude, type="local")
+meta(crude[1], type="local")
+
+meta(corpus, "Label") <- docs[,"Label"]
+meta(corpus)
